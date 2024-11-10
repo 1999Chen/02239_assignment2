@@ -15,61 +15,59 @@ public class PrintServer implements PrintServerInterface {
 
     @Override
     public String print() throws RemoteException {
-        return "good";
+        return "printing";
     }
 
     @Override
     public String queue() throws RemoteException {
-        return null;
+        return "queue";
     }
 
     @Override
     public String toQueue() throws RemoteException {
-        return null;
+        return "toQueue";
     }
 
     @Override
     public String start() throws RemoteException {
-        return null;
+        return "start";
     }
 
     @Override
     public String stop() throws RemoteException {
-        return null;
+        return "stop";
     }
 
     @Override
     public String restart() throws RemoteException {
-        return null;
+        return "restart";
     }
 
     @Override
     public String status() throws RemoteException {
-        return null;
+        return "status";
     }
 
     @Override
     public String readConfig() throws RemoteException {
-        return null;
+        return "readConfig";
     }
 
     @Override
     public String setConfig() throws RemoteException {
-        return null;
+        return "setConfig";
     }
 
 
     public static void main(String[] args) {
 
             try {
-                // 创建并导出远程对象
+
                 PrintServer server = new PrintServer();
                 PrintServerInterface stub = (PrintServerInterface) UnicastRemoteObject.exportObject(server, 0);
 
-                // 创建或获取RMI注册表
                 Registry registry = LocateRegistry.createRegistry(1099);
 
-                // 绑定远程对象
                 registry.rebind("RemoteService", stub);
 
                 System.out.println("Server is ready.");

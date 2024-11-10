@@ -29,7 +29,7 @@ public class Client {
 
                 boolean running = true;
 
-                while (running) {
+                while (true) {
 
                     String input = scanner.nextLine();
 
@@ -37,45 +37,59 @@ public class Client {
 
                         case "print" :
                             response1=stub.print();
+                            System.out.println("Response from server: " + response1);
+                            break;
 
                         case "exit":
                             System.out.println("ends。");
-                            break;
+                            return;
 
                         case "queue":
                             response1=stub.queue();
+                            System.out.println("Response from server: " + response1);
+                            break;
 
                         case "toQueue":
                             response1=stub.toQueue();
+                            System.out.println("Response from server: " + response1);
+                            break;
 
                         case "start":
                             response1=stub.start();
+                            System.out.println("Response from server: " + response1);
+                            break;
 
                         case "restart":
                             response1=stub.restart();
+                            System.out.println("Response from server: " + response1);
+                            break;
 
                         case "status":
                             response1=stub.status();
+                            System.out.println("Response from server: " + response1);
+                            break;
 
                         case "stop":
                             response1=stub.stop();
+                            System.out.println("Response from server: " + response1);
+                            break;
 
                         case "readConfig":
                             response1=stub.readConfig();
+                            System.out.println("Response from server: " + response1);
 
                         case "setConfig":
                             response1=stub.setConfig();
+                            System.out.println("Response from server: " + response1);
+                            break;
                     }
-                    System.out.println("Response from server: " + response1);
+
 
 
 
                     System.out.println("hello: " + input);
 
                 }
-
-
-
 
 
             } catch (Exception e) {
