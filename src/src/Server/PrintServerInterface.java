@@ -7,20 +7,21 @@ public interface PrintServerInterface extends Remote{
 
         String sayHello(String name)throws RemoteException;
 
-        String print() throws RemoteException;
-        String queue() throws RemoteException;
-        String toQueue() throws RemoteException;
+        //String print(String sessionId, String filename, String printer) throws RemoteException;
+        //String queue() throws RemoteException;
+
+         String print(String sessionId, String filename, String printer) throws RemoteException;
+         String queue(String sessionId, String printer) throws RemoteException;String toQueue() throws RemoteException;
         String start() throws RemoteException;
         String stop() throws RemoteException;
         String restart() throws RemoteException;
         String status() throws RemoteException;
         String readConfig() throws RemoteException;
         String setConfig() throws RemoteException;
-
+        String login(String username, String password) throws RemoteException;
 
 
     }
-
 
 
 
