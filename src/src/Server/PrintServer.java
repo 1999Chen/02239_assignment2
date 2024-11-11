@@ -5,8 +5,18 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
-public class PrintServer implements PrintServerInterface {
+public class PrintServer extends UnicastRemoteObject implements PrintServerInterface {
+    public PrintServer() throws RemoteException {
+        super();
+    }
+    private AuthService authService = new AuthService();
 
+    public String login(String username, String password) throws RemoteException {
+        if (authService.Authenticate(username, password)){
+            return SessionManager.createSession(username);
+        }
+        return null;
+    }
 
     @Override
     public String sayHello(String name) throws RemoteException {
@@ -14,12 +24,22 @@ public class PrintServer implements PrintServerInterface {
     }
 
     @Override
-    public String print() throws RemoteException {
+    public String print(String sessionId, String filename, String printer) throws RemoteException {
+        if (SessionManager.isSessionvalid(sessionId)) {
+            System.out.println("Printing file: " + filename + " to printer:" + printer);
+        } else {
+            System.out.println("Session is invalid, please log in again.");
+        }
         return "printing";
     }
 
     @Override
-    public String queue() throws RemoteException {
+    public String queue(String sessionId, String printer) throws RemoteException {
+        if (SessionManager.isSessionvalid(sessionId)) {
+            System.out.println("Displaying print queue...");
+        } else {
+            System.out.println("Session is invalid, please log in again.");
+        }
         return "queue";
     }
 
