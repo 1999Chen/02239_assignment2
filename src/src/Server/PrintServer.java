@@ -26,11 +26,11 @@ public class PrintServer extends UnicastRemoteObject implements PrintServerInter
     @Override
     public String print(String sessionId, String filename, String printer) throws RemoteException {
         if (SessionManager.isSessionvalid(sessionId)) {
-            System.out.println("Printing file: " + filename + " to printer:" + printer);
+           return "Printing file: " + filename + " to printer: " + printer;
         } else {
-            System.out.println("Session is invalid, please log in again.");
+           return "Session is invalid, please log in again.";
         }
-        return "printing";
+       
     }
 
     @Override
