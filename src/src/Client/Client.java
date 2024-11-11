@@ -1,13 +1,11 @@
 package Client;
 
-import Server.PrintServer;
 import Server.PrintServerInterface;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class Client {
@@ -17,6 +15,12 @@ public class Client {
 
                 Registry registry = LocateRegistry.getRegistry("localhost", 1099);
                 PrintServerInterface stub = (PrintServerInterface) registry.lookup("RemoteService");
+
+                String sessionId = login(stub);
+                if (sessionId == null) {
+                    System.out.println("Login failed. Exit the program。");
+                    return;
+                }
 
 
                 String response = stub.sayHello("Alice");
@@ -30,13 +34,18 @@ public class Client {
                 boolean running = true;
 
                 while (true) {
-
+                    System.out.print("Enter command (print, queue, topQueue, status, start, stop, restart, readConfig, setConfig, exit): ");
+                    String command = scanner.nextLine();
                     String input = scanner.nextLine();
 
                     switch (input){
 
                         case "print" :
-                            response1=stub.print();
+                            System.out.print("Enter filename: ");
+                            String filename = scanner.nextLine();
+                            System.out.print("Enter printer: ");
+                            String printer = scanner.nextLine();
+                            response1=stub.print(sessionId, filename, printer);
                             System.out.println("Response from server: " + response1);
                             break;
 
@@ -45,16 +54,23 @@ public class Client {
                             return;
 
                         case "queue":
-                            response1=stub.queue();
+                            System.out.print("Enter printer: ");
+                            printer = scanner.nextLine();
+                            response1=stub.queue(sessionId,printer);
                             System.out.println("Response from server: " + response1);
                             break;
 
                         case "toQueue":
+                            System.out.print("Enter printer: ");
+                            printer = scanner.nextLine();
+                            System.out.print("Enter job number: ");
+                            int jobNumber = Integer.parseInt(scanner.nextLine());
                             response1=stub.toQueue();
                             System.out.println("Response from server: " + response1);
                             break;
 
                         case "start":
+                            System.out.print("EStarting the server...");
                             response1=stub.start();
                             System.out.println("Response from server: " + response1);
                             break;
@@ -98,5 +114,22 @@ public class Client {
             }
 
 
+    }
+
+    private static String login(PrintServerInterface stub)  throws RemoteException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+
+        // Call the login method on the server
+        String sessionToken = stub.login(username, password);
+        if (sessionToken != null) {
+            System.out.println("Login successful. Session token: " + sessionToken);
+        } else {
+            System.out.println("Login failed.");
+        }
+        return sessionToken;
     }
 }
