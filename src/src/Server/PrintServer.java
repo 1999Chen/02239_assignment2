@@ -19,63 +19,100 @@ public class PrintServer extends UnicastRemoteObject implements PrintServerInter
     }
 
     @Override
-    public String sayHello(String name) throws RemoteException {
-        return "Hello, " + name + "!";
+    public String sayHello() throws RemoteException {
+        return "Hello! ";
     }
 
     @Override
     public String print(String sessionId, String filename, String printer) throws RemoteException {
+        System.out.println("session id is "+sessionId);
         if (SessionManager.isSessionvalid(sessionId)) {
-            System.out.println("Printing file: " + filename + " to printer:" + printer);
+            return "Printing file: " + filename + " to printer:";
         } else {
-            System.out.println("Session is invalid, please log in again.");
+            return "Session is invalid, please log in again.";
         }
-        return "printing";
+
     }
 
     @Override
     public String queue(String sessionId, String printer) throws RemoteException {
         if (SessionManager.isSessionvalid(sessionId)) {
-            System.out.println("Displaying print queue...");
+            return "Displaying print queue...";
         } else {
-            System.out.println("Session is invalid, please log in again.");
+            return "Session is invalid, please log in again.";
         }
-        return "queue";
     }
 
     @Override
-    public String toQueue() throws RemoteException {
-        return "toQueue";
+    public String toQueue(String sessionId, String printer, int job) throws RemoteException
+    {
+        if (SessionManager.isSessionvalid(sessionId)) {
+            return "Displaying print queue...";
+        } else {
+            return "Session is invalid, please log in again.";
+        }
+    }
+
+
+    @Override
+    public String start(String sessionId) throws RemoteException {
+        if (SessionManager.isSessionvalid(sessionId)){
+            return "starting..";
+        }
+        else {
+            return "Session is invalid, please log in again.";
+        }
+
     }
 
     @Override
-    public String start() throws RemoteException {
-        return "start";
+    public String stop(String sessionId) throws RemoteException {
+        if (SessionManager.isSessionvalid(sessionId)){
+            return "stopping..";
+        }
+        else {
+            return "Session is invalid, please log in again.";
+        }
     }
 
     @Override
-    public String stop() throws RemoteException {
-        return "stop";
+    public String restart(String sessionId) throws RemoteException {
+        if (SessionManager.isSessionvalid(sessionId)){
+            return "restarting..";
+        }
+        else {
+            return "Session is invalid, please log in again.";
+        }
     }
 
     @Override
-    public String restart() throws RemoteException {
-        return "restart";
+    public String status(String sessionId, String printer) throws RemoteException {
+        if (SessionManager.isSessionvalid(sessionId)){
+            return "status is ..";
+        }
+        else {
+            return "Session is invalid, please log in again.";
+        }
     }
 
     @Override
-    public String status() throws RemoteException {
-        return "status";
+    public String readConfig(String sessionId, String parameter) throws RemoteException {
+        if (SessionManager.isSessionvalid(sessionId)){
+            return "reading config ..";
+        }
+        else {
+            return "Session is invalid, please log in again.";
+        }
     }
 
     @Override
-    public String readConfig() throws RemoteException {
-        return "readConfig";
-    }
-
-    @Override
-    public String setConfig() throws RemoteException {
-        return "setConfig";
+    public String setConfig(String sessionId, String parameter, String value) throws RemoteException {
+        if (SessionManager.isSessionvalid(sessionId)){
+            return "setting config ..";
+        }
+        else {
+            return "Session is invalid, please log in again.";
+        }
     }
 
 
@@ -84,11 +121,10 @@ public class PrintServer extends UnicastRemoteObject implements PrintServerInter
             try {
 
                 PrintServer server = new PrintServer();
-                PrintServerInterface stub = (PrintServerInterface) UnicastRemoteObject.exportObject(server, 0);
 
                 Registry registry = LocateRegistry.createRegistry(1099);
 
-                registry.rebind("RemoteService", stub);
+                registry.rebind("RemoteService", server);
 
                 System.out.println("Server is ready.");
             } catch (RemoteException e) {

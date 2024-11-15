@@ -16,16 +16,16 @@ public class SessionManager {
         return sessionId;
     }
     public static boolean isSessionvalid(String sessionId) {
-      Long startTime = session.get(sessionId);
-      if (startTime == null) {
-          return false;
-      }
-      Long endTime = System.currentTimeMillis() - startTime;
-      if (endTime < startTime) {
-          session.remove(sessionId);
-          return false;
-      }
-      return true;
+        Long startTime = session.get(sessionId);
+        if (startTime == null) {
+            return false;
+        }
+        Long endTime = System.currentTimeMillis() - startTime;
+        if (endTime < startTime) {
+            session.remove(sessionId);
+            return false;
+        }
+        return true;
 
     }
     public static void endSession(String sessionToken) {

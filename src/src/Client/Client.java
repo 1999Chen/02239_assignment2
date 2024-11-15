@@ -23,15 +23,12 @@ public class Client {
                 }
 
 
-                String response = stub.sayHello("Alice");
+                String response = stub.sayHello();
 
                 System.out.println("Response from server: " + response);
 
                 String response1="";
                 Scanner scanner = new Scanner(System.in);
-                System.out.println("pls (input 'exit' to quit)：input commands: print/ queue/ toQueue/ start/ stop/ restart/ status/ readConfig/ setConfig: " );
-
-                boolean running = true;
 
                 while (true) {
                     System.out.print("Enter command (print, queue, topQueue, status, start, stop, restart, readConfig, setConfig, exit): ");
@@ -65,43 +62,50 @@ public class Client {
                             printer = scanner.nextLine();
                             System.out.print("Enter job number: ");
                             int jobNumber = Integer.parseInt(scanner.nextLine());
-                            response1=stub.toQueue();
+                            response1=stub.toQueue(sessionId,printer,jobNumber);
                             System.out.println("Response from server: " + response1);
                             break;
 
                         case "start":
                             System.out.print("EStarting the server...");
-                            response1=stub.start();
+                            response1=stub.start(sessionId);
                             System.out.println("Response from server: " + response1);
                             break;
 
                         case "restart":
-                            response1=stub.restart();
+                            response1=stub.restart(sessionId);
                             System.out.println("Response from server: " + response1);
                             break;
 
                         case "status":
-                            response1=stub.status();
+                            System.out.print("Enter printer: ");
+                            printer = scanner.nextLine();
+                            response1=stub.status(sessionId,printer);
                             System.out.println("Response from server: " + response1);
                             break;
 
                         case "stop":
-                            response1=stub.stop();
+                            response1=stub.stop(sessionId);
                             System.out.println("Response from server: " + response1);
                             break;
 
                         case "readConfig":
-                            response1=stub.readConfig();
+                            System.out.print("Enter parameter: ");
+                            String parameter = scanner.nextLine();
+                            response1=stub.readConfig(sessionId,parameter);
                             System.out.println("Response from server: " + response1);
+                            break;
 
                         case "setConfig":
-                            response1=stub.setConfig();
+                            System.out.print("Enter printer: ");
+                            printer = scanner.nextLine();
+                            System.out.print("Enter value: ");
+                            String value = scanner.nextLine();
+
+                            response1=stub.setConfig(sessionId,printer,value);
                             System.out.println("Response from server: " + response1);
                             break;
                     }
-
-
-
 
                     System.out.println("hello: " + input);
 
